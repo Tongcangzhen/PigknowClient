@@ -22,6 +22,7 @@ public class RegistActivity extends AppCompatActivity {
 
     @BindView(R.id.et_account)
     EditText et_account;
+
     @BindView(R.id.et_password)
     EditText et_password;
 
