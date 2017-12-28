@@ -18,10 +18,10 @@ public class MyPageAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         Fragment fragment=null;
         if (position == 0) {
-            fragment=new TestBlankFragment();
+            fragment=new ItemFragment();
         }
         if (position == 1) {
-            fragment=new TestBlankFragment();
+            fragment=new ItemFragment();
         }
         return fragment;
     }

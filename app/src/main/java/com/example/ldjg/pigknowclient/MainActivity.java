@@ -22,11 +22,14 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.ldjg.pigknowclient.DB.User;
+import com.example.ldjg.pigknowclient.Util.ShowDialog;
+import com.example.ldjg.pigknowclient.dummy.DummyContent;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.bmob.v3.BmobUser;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ItemFragment.OnListFragmentInteractionListener{
     private final int GET_PERMISSION_REQUEST = 100; //权限申请自定义码
 
     @BindView(R.id.viewpage)
@@ -45,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         MyPageAdapter myPageAdapter=new MyPageAdapter(getSupportFragmentManager());
         viewpage.setAdapter(myPageAdapter);
         tabLayout.setupWithViewPager(viewpage);
+        final User user =  BmobUser.getCurrentUser(User.class);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -54,7 +58,21 @@ public class MainActivity extends AppCompatActivity {
 //                        .setAction("Action", null).show();
 //                Intent intent=new Intent(MainActivity.this,TakephotoActivity.class);
 //                startActivity(intent);
-                getPermissions();
+                if (user.getFarms() == null || !user.getMobilePhoneNumberVerified() || user.getMobilePhoneNumber() == null) {
+                    if (user.getFarms() == null) {
+                        ShowDialog.showFillFarmsDialog(MainActivity.this);
+                    } else if (user.getFarms() != null && user.getMobilePhoneNumber() == null ) {
+                        ShowDialog.showFillPhoneDialog(MainActivity.this);
+                    } else if (user.getFarms() != null && user.getMobilePhoneNumber() != null && !user.getMobilePhoneNumberVerified()) {
+                        ShowDialog.showCheckPhoneDialog(MainActivity.this);
+                    }else {
+                        Toast.makeText(MainActivity.this,"出现未知错误",Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    getPermissions();
+                }
+
+
             }
         });
     }
@@ -164,4 +182,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onListFragmentInteraction(DummyContent.DummyItem item) {
+        Toast.makeText(this,item.id+item.details,Toast.LENGTH_LONG).show();
+    }
 }

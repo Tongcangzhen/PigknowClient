@@ -7,13 +7,13 @@ import cn.bmob.v3.BmobUser;
  */
 
 public class User extends BmobUser {
-//    private Farms farms;
-//
-//    public Farms getFarms() {
-//        return farms;
-//    }
-//
-//    public void setFarms(Farms farms) {
-//        this.farms = farms;
-//    }
+    private Farms farms;
+
+    public Farms getFarms() {
+        return farms;
+    }
+
+    public void setFarms(Farms farms) {
+        this.farms = farms;
+    }
 }
