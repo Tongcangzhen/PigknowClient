@@ -8,6 +8,7 @@
 
     <string name="prompt_email">Email</string>
     <string name="prompt_password">密码 (optional)</string>
+    <string name="prompt_invitationcode">授权码</string>
     <string name="action_sign_in">登录或注册</string>
     <string name="action_sign_in_short">登录</string>
     <string name="error_invalid_email">This email address is invalid</string>
@@ -18,6 +19,7 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
     <string name="title_activity_main">主页</string>
 
     <!-- TODO: Remove or change this placeholder text -->

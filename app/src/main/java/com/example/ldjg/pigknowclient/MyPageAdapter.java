@@ -23,12 +23,15 @@ public class MyPageAdapter extends FragmentStatePagerAdapter {
         if (position == 1) {
             fragment=new ItemFragment();
         }
+        if (position == 2) {
+            fragment=new TestBlankFragment();
+        }
         return fragment;
     }
 
     @Override
     public int getCount() {
-        return 2;
+        return 3;
     }
 
     @Override
@@ -39,6 +42,9 @@ public class MyPageAdapter extends FragmentStatePagerAdapter {
         }
         if (position == 1) {
             name="已审核";
+        }
+        if (position == 2) {
+            name="我的";
         }
         return name;
     }

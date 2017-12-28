@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragment.OnLi
                     } else if (user.getFarms() != null && user.getMobilePhoneNumber() != null && !user.getMobilePhoneNumberVerified()) {
                         ShowDialog.showCheckPhoneDialog(MainActivity.this);
                     }else {
-                        Toast.makeText(MainActivity.this,"出现未知错误",Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this,"出现未知错误,请联系管理员",Toast.LENGTH_LONG).show();
                     }
                 } else {
                     getPermissions();
