@@ -63,10 +63,12 @@ public class TakephotoActivity extends AppCompatActivity {
                 //获取视频路径
                 String path = FileUtil.saveBitmap("JCamera", firstFrame);
                 Log.i("CJT", "url = " + url + ", Bitmap = " + path);
-                Intent intent = new Intent();
+                Intent intent = new Intent(TakephotoActivity.this,AddRecordActivity.class);
                 intent.putExtra("path", path);
-                setResult(101, intent);
-                finish();
+                intent.putExtra("url", url);
+//                setResult(101, intent);
+                startActivity(intent);
+//                finish();
             }
             //@Override
             //public void quit() {

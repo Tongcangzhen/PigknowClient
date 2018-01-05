@@ -41,7 +41,11 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".TakephotoActivity" />
         <activity android:name=".RegistActivity" />
-        <activity android:name=".SelectFarmsActivity"></activity>
+        <activity android:name=".SelectFarmsActivity" />
+        <activity android:name=".AddRecordActivity"
+                    android:configChanges="orientation|keyboardHidden|screenSize">
+
+        </activity>
     </application>
 
 </manifest>

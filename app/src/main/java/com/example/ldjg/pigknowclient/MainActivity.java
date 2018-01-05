@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragment.OnLi
 //                startActivity(intent);
                 if (user.getFarms() == null || !user.getMobilePhoneNumberVerified() || user.getMobilePhoneNumber() == null) {
                     if (user.getFarms() == null) {
+                        getPermissions();
                         ShowDialog.showFillFarmsDialog(MainActivity.this);
                     } else if (user.getFarms() != null && user.getMobilePhoneNumber() == null ) {
                         ShowDialog.showFillPhoneDialog(MainActivity.this);
@@ -102,7 +103,8 @@ public class MainActivity extends AppCompatActivity implements ItemFragment.OnLi
             return true;
         } else {
             if (id == R.id.action_add) {
-
+                Intent intent=new Intent(MainActivity.this,AddRecordActivity.class);
+                startActivity(intent);
                 return true;
             }
         }
