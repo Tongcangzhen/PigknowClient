@@ -107,6 +107,7 @@ public class SelectFarmsActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
         final SharedPreferences.Editor editor=sharedPreferences.edit();
         editor.putString("farmsid",acitvityfarms.getObjectId());
+        editor.putString("farmsname",acitvityfarms.getFarmsName());
         editor.apply();
         User curruser= BmobUser.getCurrentUser(User.class);
         User user=new User();

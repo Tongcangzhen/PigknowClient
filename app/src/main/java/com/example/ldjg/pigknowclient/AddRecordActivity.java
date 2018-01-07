@@ -92,6 +92,7 @@ public class AddRecordActivity extends AppCompatActivity {
         Farms farms=new Farms();
         farms.setObjectId(sharedPreferences.getString("farmsid",""));
         Record record=new Record();
+        record.setFarmsName(sharedPreferences.getString("farmsname",""));
         record.setNum(num);
         record.setUser(user);
         record.setFarms(farms);
