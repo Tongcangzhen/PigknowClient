@@ -11,6 +11,16 @@ public class Farms extends BmobObject{
     private String adress;
     private Admin admin;
 
+    public com.example.ldjg.pigknowclient.DB.User getUser() {
+        return User;
+    }
+
+    public void setUser(com.example.ldjg.pigknowclient.DB.User user) {
+        User = user;
+    }
+
+    private User User;
+
     public String getFarmsName() {
         return farmsName;
     }

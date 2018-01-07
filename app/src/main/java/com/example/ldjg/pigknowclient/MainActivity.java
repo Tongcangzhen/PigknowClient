@@ -3,10 +3,12 @@ package com.example.ldjg.pigknowclient;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -31,6 +33,8 @@ import cn.bmob.v3.BmobUser;
 
 public class MainActivity extends AppCompatActivity implements ItemFragment.OnListFragmentInteractionListener{
     private final int GET_PERMISSION_REQUEST = 100; //权限申请自定义码
+    SharedPreferences sharedPreferences;
+
 
     @BindView(R.id.viewpage)
     ViewPager viewpage;
@@ -49,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragment.OnLi
         viewpage.setAdapter(myPageAdapter);
         tabLayout.setupWithViewPager(viewpage);
         final User user =  BmobUser.getCurrentUser(User.class);
-
+        sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,16 +62,18 @@ public class MainActivity extends AppCompatActivity implements ItemFragment.OnLi
 //                        .setAction("Action", null).show();
 //                Intent intent=new Intent(MainActivity.this,TakephotoActivity.class);
 //                startActivity(intent);
-                if (user.getFarms() == null || !user.getMobilePhoneNumberVerified() || user.getMobilePhoneNumber() == null) {
-                    if (user.getFarms() == null) {
-                        getPermissions();
+                if (sharedPreferences.getString("farmsid","") == null || user.getMobilePhoneNumberVerified()!=null || user.getMobilePhoneNumber() == null) {
+                    if (sharedPreferences.getString("farmsid","") == "") {
+//                        getPermissions();
                         ShowDialog.showFillFarmsDialog(MainActivity.this);
-                    } else if (user.getFarms() != null && user.getMobilePhoneNumber() == null ) {
-                        ShowDialog.showFillPhoneDialog(MainActivity.this);
-                    } else if (user.getFarms() != null && user.getMobilePhoneNumber() != null && !user.getMobilePhoneNumberVerified()) {
-                        ShowDialog.showCheckPhoneDialog(MainActivity.this);
-                    }else {
+                    }
+//                    } else if (user.getFarms() != null && user.getMobilePhoneNumber() == null ) {
+//                        ShowDialog.showFillPhoneDialog(MainActivity.this);
+//                    } else if (user.getFarms() != null && user.getMobilePhoneNumber() != null && !user.getMobilePhoneNumberVerified()) {
+//                        ShowDialog.showCheckPhoneDialog(MainActivity.this);
+                    else {
                         Toast.makeText(MainActivity.this,"出现未知错误,请联系管理员",Toast.LENGTH_LONG).show();
+                        getPermissions();
                     }
                 } else {
                     getPermissions();
@@ -103,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragment.OnLi
             return true;
         } else {
             if (id == R.id.action_add) {
-                Intent intent=new Intent(MainActivity.this,AddRecordActivity.class);
+                Intent intent=new Intent(MainActivity.this, SelectFarmsActivity.class);
                 startActivity(intent);
                 return true;
             }

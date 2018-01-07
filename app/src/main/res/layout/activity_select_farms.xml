@@ -19,9 +19,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/prompt_invitationcode"
-            android:imeActionId="@+id/login"
-            android:imeActionLabel="@string/action_sign_in_short"
-            android:imeOptions="actionUnspecified"
             android:inputType="textPassword"
             android:maxLines="1"
             android:singleLine="true" />
@@ -35,5 +32,22 @@
        android:text="选择农场"
        android:textColor="@color/md_pink_400"
        android:id="@+id/button_selectfarm"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:textColor="@color/md_pink_200"
+        android:id="@+id/textview_selectfarm"
+        />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="50dp"
+        android:id="@+id/button_selectfarm_do"
+        android:text="确定"
+        android:textColor="@color/md_pink_400"
+        />
+
 
 </LinearLayout>
