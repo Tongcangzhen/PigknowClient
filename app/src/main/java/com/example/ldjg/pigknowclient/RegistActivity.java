@@ -89,7 +89,7 @@ public class RegistActivity extends AppCompatActivity {
                 progress.dismiss();
                     Toast.makeText(RegistActivity.this, "注册成功", Toast.LENGTH_LONG).show();
 //                toast("注册成功---用户名："+user.getUsername()+"，年龄："+user.getAge());
-                Intent intent = new Intent(RegistActivity.this,MainActivity.class);
+                Intent intent = new Intent(RegistActivity.this,LoginActivity.class);
                 intent.putExtra("from", "login");
                 startActivity(intent);
                 finish();

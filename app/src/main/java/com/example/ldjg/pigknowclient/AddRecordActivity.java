@@ -13,6 +13,8 @@ import com.bumptech.glide.Glide;
 import com.example.ldjg.pigknowclient.DB.Farms;
 import com.example.ldjg.pigknowclient.DB.Record;
 import com.example.ldjg.pigknowclient.DB.User;
+import com.example.ldjg.pigknowclient.Util.Gettime;
+import com.example.ldjg.pigknowclient.Util.UIHelper;
 import com.xiao.nicevideoplayer.NiceVideoPlayer;
 import com.xiao.nicevideoplayer.NiceVideoPlayerManager;
 import com.xiao.nicevideoplayer.TxVideoPlayerController;
@@ -73,6 +75,7 @@ public class AddRecordActivity extends AppCompatActivity {
     private void addNewRecord(BmobFile bmobFile){
         sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
         int num;
+        String time= Gettime.getthisdate();
         if (editTextPigNum.getText() == null) {
             num = 1;
         } else {
@@ -92,6 +95,7 @@ public class AddRecordActivity extends AppCompatActivity {
         record.setNum(num);
         record.setUser(user);
         record.setFarms(farms);
+        record.setUpLoadDate(time);
         record.setFarmsRemarks(beizhu);
         record.setAudit(0);
         record.setVideoFile(bmobFile);
@@ -100,6 +104,7 @@ public class AddRecordActivity extends AppCompatActivity {
             public void done(String s, BmobException e) {
                 if (e == null) {
                     Toast.makeText(AddRecordActivity.this, "添加成功", Toast.LENGTH_LONG).show();
+                    UIHelper.returnHome(AddRecordActivity.this);
                 } else {
                     Toast.makeText(AddRecordActivity.this,"出现未知错误,请联系管理员",Toast.LENGTH_LONG).show();
                 }

@@ -71,5 +71,22 @@ public class Record extends BmobObject {
     private String adminRemarks;
     private Farms farms;
     private User user;
+    private String upLoadDate;
+    private String auditDate;
 
+    public String getUpLoadDate() {
+        return upLoadDate;
+    }
+
+    public void setUpLoadDate(String upLoadDate) {
+        this.upLoadDate = upLoadDate;
+    }
+
+    public String getAuditDate() {
+        return auditDate;
+    }
+
+    public void setAuditDate(String auditDate) {
+        this.auditDate = auditDate;
+    }
 }

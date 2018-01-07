@@ -68,6 +68,7 @@ public class SelectFarmsActivity extends AppCompatActivity {
         BmobQuery<Farms> query = new BmobQuery<Farms>();
         BmobQuery<Admin> innerQuery = new BmobQuery<Admin>();
         innerQuery.addWhereEqualTo("invitationCode",invicode);
+        query.addWhereDoesNotExists("User");
         query.addWhereMatchesQuery("admin", "Admin",innerQuery);
         query.findObjects(new FindListener<Farms>() {
             @Override

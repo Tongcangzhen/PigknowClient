@@ -104,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragment.OnLi
         }
         if (id == R.id.action_quit) {
             User.logOut();
+            sharedPreferences.edit().clear();
             Intent intent=new Intent(MainActivity.this,LoginActivity.class);
             startActivity(intent);
             return true;
