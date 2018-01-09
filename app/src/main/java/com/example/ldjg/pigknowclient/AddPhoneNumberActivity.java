@@ -25,14 +25,10 @@ public class AddPhoneNumberActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.button_check_code)
-    public void checkCode() {
-
-    }
+    public void checkCode() {}
 
     @OnClick(R.id.button_add_phonenumber)
-    public void addPhone() {
-
-    }
+    public void addPhone() {}
 
     public void getCheckCode() {
 
