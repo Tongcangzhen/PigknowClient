@@ -1,5 +1,6 @@
 package com.example.ldjg.pigknowclient;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,8 +17,8 @@ import android.widget.Toast;
 
 import com.example.ldjg.pigknowclient.DB.Record;
 import com.example.ldjg.pigknowclient.DB.User;
-import com.example.ldjg.pigknowclient.dummy.DummyContent;
-import com.example.ldjg.pigknowclient.dummy.DummyContent.DummyItem;
+import com.example.ldjg.pigknowclient.Util.UIHelper;
+
 
 import java.util.List;
 
@@ -42,6 +43,9 @@ public class ItemFragment extends Fragment {
     private int mColumnCount = 1;
     private int audit_type;
     private OnListFragmentInteractionListener mListener;
+
+
+//    private Dialog waitDialog;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -85,12 +89,14 @@ public class ItemFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
+
             getRecord(recyclerView);
         }
         return view;
     }
 
     private void getRecord(final RecyclerView recyclerView) {
+//        waitDialog= UIHelper.createLoadingDialog(getContext(),"加载中...");
         User user = BmobUser.getCurrentUser(User.class);
         BmobQuery<Record> query = new BmobQuery<Record>();
         query.addWhereEqualTo("user", user);
@@ -103,9 +109,11 @@ public class ItemFragment extends Fragment {
                     recyclerView.setAdapter(new MyItemRecyclerViewAdapter(list, mListener));
                     recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),
                             DividerItemDecoration.VERTICAL));
+//                    UIHelper.closeDialog(waitDialog);
                 } else {
                     Toast.makeText(getContext(), "查询记录失败", Toast.LENGTH_LONG).show();
                     e.printStackTrace();
+//                    UIHelper.closeDialog(waitDialog);
                 }
             }
         });

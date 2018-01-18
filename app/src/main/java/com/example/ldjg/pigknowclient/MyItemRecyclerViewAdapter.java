@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import com.example.ldjg.pigknowclient.DB.Record;
 import com.example.ldjg.pigknowclient.ItemFragment.OnListFragmentInteractionListener;
-import com.example.ldjg.pigknowclient.dummy.DummyContent.DummyItem;
 
 import java.util.List;
 
