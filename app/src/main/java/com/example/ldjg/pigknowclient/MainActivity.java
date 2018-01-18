@@ -18,22 +18,32 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.ldjg.pigknowclient.DB.Farms;
+import com.example.ldjg.pigknowclient.DB.Record;
 import com.example.ldjg.pigknowclient.DB.User;
 import com.example.ldjg.pigknowclient.Util.ShowDialog;
 import com.example.ldjg.pigknowclient.dummy.DummyContent;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
 
 public class MainActivity extends AppCompatActivity implements ItemFragment.OnListFragmentInteractionListener{
     private final int GET_PERMISSION_REQUEST = 100; //权限申请自定义码
     SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+    private long firstTime = 0;
 
 
     @BindView(R.id.viewpage)
@@ -63,12 +73,13 @@ public class MainActivity extends AppCompatActivity implements ItemFragment.OnLi
 //                Intent intent=new Intent(MainActivity.this,TakephotoActivity.class);
 //                startActivity(intent);
                 if (sharedPreferences.getString("farmsid","") == null || user.getMobilePhoneNumberVerified()!=null || user.getMobilePhoneNumber() == null) {
-                    if (sharedPreferences.getString("farmsid","") == "") {
+                    if (sharedPreferences.getString("farmsid","") == ""||sharedPreferences.getString("installationId","")=="") {
 //                        getPermissions();
-                        ShowDialog.showFillFarmsDialog(MainActivity.this);
+                      setFarms();
 
                     } else if (sharedPreferences.getString("farmsid","") != "" && user.getMobilePhoneNumber() == null ) {
-                    ShowDialog.showFillPhoneDialog(MainActivity.this);
+//                    ShowDialog.showFillPhoneDialog(MainActivity.this);
+                        getPermissions();
 //                    } else if (user.getFarms() != null && user.getMobilePhoneNumber() != null && !user.getMobilePhoneNumberVerified()) {
 //                        ShowDialog.showCheckPhoneDialog(MainActivity.this);
                 }else {
@@ -117,6 +128,33 @@ public class MainActivity extends AppCompatActivity implements ItemFragment.OnLi
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setFarms() {
+        User user = BmobUser.getCurrentUser(User.class);
+        BmobQuery<Farms> query = new BmobQuery<Farms>();
+        query.addWhereEqualTo("User", user);
+        query.include("admin");
+        query.findObjects(new FindListener<Farms>() {
+            @Override
+            public void done(List<Farms> list, BmobException e) {
+                if (e == null) {
+                    if (list.size() == 0) {
+                        ShowDialog.showFillFarmsDialog(MainActivity.this);
+                    } else {
+                        Farms farms = list.get(0);
+                        editor = sharedPreferences.edit();
+                        editor.putString("farmsid",farms.getObjectId());
+                        editor.putString("farmsname",farms.getFarmsName());
+                        editor.putString("installationId", farms.getAdmin().getInstalId());
+                        editor.apply();
+                        Toast.makeText(MainActivity.this, "查询农场成功"+farms.getAdmin().getInstalId(), Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    Toast.makeText(MainActivity.this, "查询农场失败", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
 
@@ -192,7 +230,26 @@ public class MainActivity extends AppCompatActivity implements ItemFragment.OnLi
     }
 
     @Override
-    public void onListFragmentInteraction(DummyContent.DummyItem item) {
-        Toast.makeText(this,item.id+item.details,Toast.LENGTH_LONG).show();
+    public void onListFragmentInteraction(Record item) {
+//        Toast.makeText(this,item.id+item.details,Toast.LENGTH_LONG).show();
     }
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        long secondTime = System.currentTimeMillis();
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if ( secondTime - firstTime < 2000) {
+                Intent home = new Intent(Intent.ACTION_MAIN);
+                home.addCategory(Intent.CATEGORY_HOME);
+                startActivity(home);
+            } else {
+                Toast.makeText(MainActivity.this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                firstTime = System.currentTimeMillis();
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
 }

@@ -25,9 +25,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.bmob.v3.Bmob;
+import cn.bmob.v3.BmobInstallation;
+import cn.bmob.v3.BmobPushManager;
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.PushListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UploadFileListener;
 
@@ -56,6 +60,7 @@ public class AddRecordActivity extends AppCompatActivity {
         Intent intent=getIntent();
         videourl=intent.getStringExtra("url");
         iamgeurl=intent.getStringExtra("path");
+        sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
         init();
     }
 
@@ -73,16 +78,15 @@ public class AddRecordActivity extends AppCompatActivity {
     }
 
     private void addNewRecord(BmobFile bmobFile){
-        sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
         int num;
         String time= Gettime.getthisdate();
-        if (editTextPigNum.getText() == null) {
+        if (editTextPigNum.getText().toString().length()==0) {
             num = 1;
         } else {
             num=Integer.valueOf(editTextPigNum.getText().toString());
         }
         String beizhu;
-        if (editTextBeizhu.getText() == null) {
+        if (editTextBeizhu.getText().toString().length()==0) {
             beizhu = "未备注";
         } else {
             beizhu=editTextBeizhu.getText().toString();
@@ -105,7 +109,7 @@ public class AddRecordActivity extends AppCompatActivity {
             public void done(String s, BmobException e) {
                 if (e == null) {
                     Toast.makeText(AddRecordActivity.this, "添加成功", Toast.LENGTH_LONG).show();
-                    UIHelper.returnHome(AddRecordActivity.this);
+                    pushAction();
                 } else {
                     Toast.makeText(AddRecordActivity.this,"出现未知错误,请联系管理员",Toast.LENGTH_LONG).show();
                 }
@@ -134,6 +138,28 @@ public class AddRecordActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void pushAction() {
+        String installationId = sharedPreferences.getString("installationId", "");
+        String msg = ("来自"+sharedPreferences.getString("farmsname", ""));
+        BmobPushManager bmobPush = new BmobPushManager();
+        BmobQuery<BmobInstallation> query = BmobInstallation.getQuery();
+        query.addWhereEqualTo("installationId", installationId);
+        bmobPush.setQuery(query);
+        bmobPush.pushMessage(msg, new PushListener() {
+            @Override
+            public void done(BmobException e) {
+                if (e == null) {
+                    UIHelper.returnHome(AddRecordActivity.this);
+                } else {
+                    Toast.makeText(AddRecordActivity.this,"推送消息失败",Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                    UIHelper.returnHome(AddRecordActivity.this);
+                }
+            }
+        });
+    }
+
 
     @OnClick(R.id.button_add_record)
     public void addRecord(){

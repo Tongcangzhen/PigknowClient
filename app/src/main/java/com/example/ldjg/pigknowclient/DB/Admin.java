@@ -20,7 +20,15 @@ public class Admin extends BmobObject {
     private String adminAccount;
     private String adminName;
     private String password;
+    private String instalId;
 
+    public String getInstalId() {
+        return instalId;
+    }
+
+    public void setInstalId(String instalId) {
+        this.instalId = instalId;
+    }
 
     public String getAdminName() {
         return adminName;

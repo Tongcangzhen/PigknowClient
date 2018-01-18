@@ -18,13 +18,13 @@ public class MyPageAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         Fragment fragment=null;
         if (position == 0) {
-            fragment=new ItemFragment();
+            fragment=ItemFragment.newInstance(1,0);
         }
         if (position == 1) {
-            fragment=new ItemFragment();
+            fragment=ItemFragment.newInstance(1,2);
         }
         if (position == 2) {
-            fragment=new TestBlankFragment();
+            fragment=ItemFragment.newInstance(1,1);
         }
         return fragment;
     }
@@ -41,10 +41,10 @@ public class MyPageAdapter extends FragmentStatePagerAdapter {
             name= "待审核";
         }
         if (position == 1) {
-            name="已审核";
+            name="未通过";
         }
         if (position == 2) {
-            name="我的";
+            name="审核通过";
         }
         return name;
     }

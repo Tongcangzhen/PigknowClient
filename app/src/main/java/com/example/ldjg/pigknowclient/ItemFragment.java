@@ -5,17 +5,26 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.example.ldjg.pigknowclient.DB.Record;
+import com.example.ldjg.pigknowclient.DB.User;
 import com.example.ldjg.pigknowclient.dummy.DummyContent;
 import com.example.ldjg.pigknowclient.dummy.DummyContent.DummyItem;
 
 import java.util.List;
+
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
 
 /**
  * A fragment representing a list of Items.
@@ -27,8 +36,11 @@ public class ItemFragment extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
+    private static final String AUDIT_TYPE = "audit-type";
+
     // TODO: Customize parameters
     private int mColumnCount = 1;
+    private int audit_type;
     private OnListFragmentInteractionListener mListener;
 
     /**
@@ -40,10 +52,11 @@ public class ItemFragment extends Fragment {
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static ItemFragment newInstance(int columnCount) {
+    public static ItemFragment newInstance(int columnCount,int auditType) {
         ItemFragment fragment = new ItemFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
+        args.putInt(AUDIT_TYPE, auditType);
         fragment.setArguments(args);
         return fragment;
     }
@@ -54,6 +67,7 @@ public class ItemFragment extends Fragment {
 
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+            audit_type = getArguments().getInt(AUDIT_TYPE);
         }
     }
 
@@ -71,9 +85,30 @@ public class ItemFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyItemRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            getRecord(recyclerView);
         }
         return view;
+    }
+
+    private void getRecord(final RecyclerView recyclerView) {
+        User user = BmobUser.getCurrentUser(User.class);
+        BmobQuery<Record> query = new BmobQuery<Record>();
+        query.addWhereEqualTo("user", user);
+        query.order("-createdAt");
+        query.addWhereEqualTo("audit", audit_type);
+        query.findObjects(new FindListener<Record>() {
+            @Override
+            public void done(List<Record> list, BmobException e) {
+                if (e == null) {
+                    recyclerView.setAdapter(new MyItemRecyclerViewAdapter(list, mListener));
+                    recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),
+                            DividerItemDecoration.VERTICAL));
+                } else {
+                    Toast.makeText(getContext(), "查询记录失败", Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
 
@@ -106,6 +141,6 @@ public class ItemFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(Record item);
     }
 }

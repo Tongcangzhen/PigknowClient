@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.ldjg.pigknowclient.DB.Record;
 import com.example.ldjg.pigknowclient.ItemFragment.OnListFragmentInteractionListener;
 import com.example.ldjg.pigknowclient.dummy.DummyContent.DummyItem;
 
@@ -18,10 +19,10 @@ import java.util.List;
  */
 public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
+    private final List<Record> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyItemRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
+    public MyItemRecyclerViewAdapter(List<Record> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -36,9 +37,16 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
-
+        holder.mDateView.setText(mValues.get(position).getUpLoadDate());
+        holder.mNumView.setText(mValues.get(position).getNum()+"");
+        int audit = mValues.get(position).getAudit();
+        if (audit == 0) {
+            holder.mAuditView.setText("未审核");
+        } else if (audit == 1) {
+            holder.mAuditView.setText("通过");
+        } else {
+            holder.mAuditView.setText("未通过");
+        }
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,20 +66,22 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
-        public DummyItem mItem;
+        public final TextView mAuditView;
+        public final TextView mNumView;
+        public final TextView mDateView;
+        public Record mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.id);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            mAuditView = (TextView) view.findViewById(R.id.audit);
+            mNumView = (TextView) view.findViewById(R.id.num);
+            mDateView = (TextView) view.findViewById(R.id.date);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + mNumView.getText() + "'";
         }
     }
 }
