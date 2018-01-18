@@ -66,4 +66,41 @@ public class ShowDialog {
                 })
                 .create().show();
     }
+
+    public static void showResetNumEmptyDialog(Context context) {
+        new AlertDialog.Builder(context)
+                .setTitle("pigknow")
+                .setMessage("修改数量不能为空")
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .create().show();
+    }
+
+    public static void showRestNumErrorDialog(Context context) {
+        new AlertDialog.Builder(context)
+                .setTitle("pigknow")
+                .setMessage("修改的数量与原数量相同")
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .create().show();
+    }
+
 }

@@ -232,6 +232,9 @@ public class MainActivity extends AppCompatActivity implements ItemFragment.OnLi
     @Override
     public void onListFragmentInteraction(Record item) {
 //        Toast.makeText(this,item.id+item.details,Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(MainActivity.this, RecordDetailActivity.class);
+        intent.putExtra("pig_data", item);
+        startActivity(intent);
     }
 
 

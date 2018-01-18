@@ -1,5 +1,7 @@
 package com.example.ldjg.pigknowclient.DB;
 
+import java.io.Serializable;
+
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.datatype.BmobFile;
 
@@ -7,7 +9,7 @@ import cn.bmob.v3.datatype.BmobFile;
  * Created by ldjg on 2018/1/7.
  */
 
-public class Record extends BmobObject {
+public class Record extends BmobObject implements Serializable{
     public BmobFile getVideoFile() {
         return videoFile;
     }
