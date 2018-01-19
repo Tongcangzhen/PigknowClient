@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.ldjg.pigknowclient.Adapter.MyPageAdapter;
 import com.example.ldjg.pigknowclient.DB.Farms;
 import com.example.ldjg.pigknowclient.DB.Record;
 import com.example.ldjg.pigknowclient.DB.User;
@@ -119,6 +120,11 @@ public class MainActivity extends AppCompatActivity implements ItemFragment.OnLi
         } else {
             if (id == R.id.action_add) {
                 Intent intent=new Intent(MainActivity.this, SelectFarmsActivity.class);
+                startActivity(intent);
+                return true;
+            }
+            if (id == R.id.action_assment) {
+                Intent intent = new Intent(MainActivity.this, AssmentActivity.class);
                 startActivity(intent);
                 return true;
             }

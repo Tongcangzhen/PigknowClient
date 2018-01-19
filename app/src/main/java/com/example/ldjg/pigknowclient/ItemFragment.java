@@ -1,10 +1,7 @@
 package com.example.ldjg.pigknowclient;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
@@ -15,15 +12,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.ldjg.pigknowclient.Adapter.MyItemRecyclerViewAdapter;
 import com.example.ldjg.pigknowclient.DB.Record;
 import com.example.ldjg.pigknowclient.DB.User;
-import com.example.ldjg.pigknowclient.Util.UIHelper;
+import com.example.ldjg.pigknowclient.Util.Gettime;
 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.datatype.BmobDate;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 
@@ -98,8 +100,17 @@ public class ItemFragment extends Fragment {
     private void getRecord(final RecyclerView recyclerView) {
 //        waitDialog= UIHelper.createLoadingDialog(getContext(),"加载中...");
         User user = BmobUser.getCurrentUser(User.class);
+        String aDate = Gettime.getMonthDate();
+        Date date = null;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            date = sdf.parse(aDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         BmobQuery<Record> query = new BmobQuery<Record>();
         query.addWhereEqualTo("user", user);
+        query.addWhereGreaterThanOrEqualTo("createdAt", new BmobDate(date));
         query.order("-createdAt");
         query.addWhereEqualTo("audit", audit_type);
         query.findObjects(new FindListener<Record>() {

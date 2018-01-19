@@ -19,5 +19,11 @@
         android:icon="@drawable/ic_action_add_write"
 
         ></item>
+    <item
+        android:id="@+id/action_assment"
+        android:orderInCategory="1"
+        android:title="assment"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_action_assment"></item>
 
 </menu>

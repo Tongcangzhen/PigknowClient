@@ -103,4 +103,21 @@ public class ShowDialog {
                 .create().show();
     }
 
+    public static void showDateWrongDialog(Context context) {
+        new AlertDialog.Builder(context)
+                .setTitle("pigknow")
+                .setMessage("日期选择错误")
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .create().show();
+    }
+
 }

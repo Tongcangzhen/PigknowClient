@@ -1,4 +1,4 @@
-package com.example.ldjg.pigknowclient;
+package com.example.ldjg.pigknowclient.Adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.example.ldjg.pigknowclient.DB.Record;
 import com.example.ldjg.pigknowclient.ItemFragment.OnListFragmentInteractionListener;
+import com.example.ldjg.pigknowclient.R;
 
 import java.util.List;
 

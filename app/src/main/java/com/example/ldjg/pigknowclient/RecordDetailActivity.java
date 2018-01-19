@@ -1,5 +1,7 @@
 package com.example.ldjg.pigknowclient;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,7 +22,11 @@ import com.xiao.nicevideoplayer.TxVideoPlayerController;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.bmob.v3.BmobInstallation;
+import cn.bmob.v3.BmobPushManager;
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.PushListener;
 import cn.bmob.v3.listener.UpdateListener;
 
 public class RecordDetailActivity extends AppCompatActivity {
@@ -53,12 +59,14 @@ public class RecordDetailActivity extends AppCompatActivity {
     Button buttonRecordDetail;
 
     Record record;
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record_detail);
         ButterKnife.bind(this);
+        sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
         record=(Record)getIntent().getSerializableExtra("pig_data");
         init();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -126,9 +134,30 @@ public class RecordDetailActivity extends AppCompatActivity {
             public void done(BmobException e) {
                 if (e == null) {
                     Toast.makeText(RecordDetailActivity.this, "修改成功", Toast.LENGTH_LONG).show();
-                    UIHelper.returnHome(RecordDetailActivity.this);
+                    pushAction();
                 } else {
                     Toast.makeText(RecordDetailActivity.this, "请求失败", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+    public void pushAction() {
+        String installationId = sharedPreferences.getString("installationId", "");
+        String msg = ("来自"+sharedPreferences.getString("farmsname", ""));
+        BmobPushManager bmobPush = new BmobPushManager();
+        BmobQuery<BmobInstallation> query = BmobInstallation.getQuery();
+        query.addWhereEqualTo("installationId", installationId);
+        bmobPush.setQuery(query);
+        bmobPush.pushMessage(msg, new PushListener() {
+            @Override
+            public void done(BmobException e) {
+                if (e == null) {
+                    UIHelper.returnHome(RecordDetailActivity.this);
+                } else {
+                    Toast.makeText(RecordDetailActivity.this,"推送消息失败",Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                    UIHelper.returnHome(RecordDetailActivity.this);
                 }
             }
         });

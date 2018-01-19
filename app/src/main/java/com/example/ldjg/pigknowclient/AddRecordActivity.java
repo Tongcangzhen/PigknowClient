@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -62,6 +63,16 @@ public class AddRecordActivity extends AppCompatActivity {
         iamgeurl=intent.getStringExtra("path");
         sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
         init();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                UIHelper.returnHome(this);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void init() {

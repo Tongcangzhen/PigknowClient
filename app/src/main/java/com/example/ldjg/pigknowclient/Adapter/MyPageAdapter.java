@@ -1,8 +1,10 @@
-package com.example.ldjg.pigknowclient;
+package com.example.ldjg.pigknowclient.Adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+
+import com.example.ldjg.pigknowclient.ItemFragment;
 
 /**
  * Created by ldjg on 2017/12/27.
@@ -18,7 +20,7 @@ public class MyPageAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         Fragment fragment=null;
         if (position == 0) {
-            fragment=ItemFragment.newInstance(1,0);
+            fragment= ItemFragment.newInstance(1,0);
         }
         if (position == 1) {
             fragment=ItemFragment.newInstance(1,2);
