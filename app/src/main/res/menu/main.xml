@@ -25,5 +25,10 @@
         android:title="assment"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_action_assment"></item>
+    <item
+        android:id="@+id/action_other"
+        android:title="查看其它农场"
+        app:showAsAction="never"
+        ></item>
 
 </menu>

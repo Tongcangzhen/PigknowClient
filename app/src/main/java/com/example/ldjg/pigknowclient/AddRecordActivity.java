@@ -7,11 +7,14 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.ldjg.pigknowclient.DB.Farms;
+import com.example.ldjg.pigknowclient.DB.Media;
 import com.example.ldjg.pigknowclient.DB.Record;
 import com.example.ldjg.pigknowclient.DB.User;
 import com.example.ldjg.pigknowclient.Util.Gettime;
@@ -42,6 +45,8 @@ public class AddRecordActivity extends AppCompatActivity {
     String videourl;
     String iamgeurl;
     SharedPreferences sharedPreferences;
+    boolean flag;
+    Media media;
 
     @BindView(R.id.nice_video_player)
     NiceVideoPlayer mNiceVideoPlayer;
@@ -52,17 +57,33 @@ public class AddRecordActivity extends AppCompatActivity {
     @BindView(R.id.edittext_pig_num)
     EditText editTextPigNum;
 
+    @BindView(R.id.textview_video_find)
+    TextView videoFind;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_record);
         ButterKnife.bind(this);
-        Bmob.initialize(this,Application_ID);
-        Intent intent=getIntent();
-        videourl=intent.getStringExtra("url");
-        iamgeurl=intent.getStringExtra("path");
-        sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
-        init();
+        Bmob.initialize(this, Application_ID);
+        Intent intent = getIntent();
+        videourl = intent.getStringExtra("url");
+        iamgeurl = intent.getStringExtra("path");
+        media=(Media) intent.getSerializableExtra("media_data");
+        flag = intent.getBooleanExtra("haveVideo",true);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if (flag) {
+            videoFind.setVisibility(View.GONE);
+            if (media != null) {
+                videourl = media.getFilePath();
+                iamgeurl = media.getPhotoPath();
+            }
+            init();
+        } else {
+            mNiceVideoPlayer.setVisibility(View.GONE);
+        }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
     @Override
@@ -120,6 +141,10 @@ public class AddRecordActivity extends AppCompatActivity {
             public void done(String s, BmobException e) {
                 if (e == null) {
                     Toast.makeText(AddRecordActivity.this, "添加成功", Toast.LENGTH_LONG).show();
+                    if (media != null){
+                        media.setVisiable(2);
+                        media.update(media.getId());
+                    }
                     pushAction();
                 } else {
                     Toast.makeText(AddRecordActivity.this,"出现未知错误,请联系管理员",Toast.LENGTH_LONG).show();
@@ -175,6 +200,12 @@ public class AddRecordActivity extends AppCompatActivity {
     @OnClick(R.id.button_add_record)
     public void addRecord(){
         upLoadVideo();
+    }
+
+    @OnClick(R.id.textview_video_find)
+    public void findVideo() {
+        Intent intent = new Intent(AddRecordActivity.this, VideoSelectActivity.class);
+        startActivity(intent);
     }
 
     @Override

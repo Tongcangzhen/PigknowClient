@@ -119,5 +119,21 @@ public class ShowDialog {
                 })
                 .create().show();
     }
+    public static void showDefaultDialog(Context context,String k) {
+        new AlertDialog.Builder(context)
+                .setTitle("pigknow")
+                .setMessage(k)
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .create().show();
+    }
 
 }

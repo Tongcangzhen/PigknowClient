@@ -15,6 +15,8 @@ import com.cjt2325.cameralibrary.listener.ClickListener;
 import com.cjt2325.cameralibrary.listener.ErrorListener;
 import com.cjt2325.cameralibrary.listener.JCameraListener;
 import com.cjt2325.cameralibrary.util.FileUtil;
+import com.example.ldjg.pigknowclient.DB.Media;
+import com.example.ldjg.pigknowclient.Util.Gettime;
 
 
 import java.io.File;
@@ -63,6 +65,7 @@ public class TakephotoActivity extends AppCompatActivity {
                 //获取视频路径
                 String path = FileUtil.saveBitmap("JCamera", firstFrame);
                 Log.i("CJT", "url = " + url + ", Bitmap = " + path);
+                putDB(url,path);
                 Intent intent = new Intent(TakephotoActivity.this,AddRecordActivity.class);
                 intent.putExtra("path", path);
                 intent.putExtra("url", url);
@@ -122,5 +125,14 @@ public class TakephotoActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         jCameraView.onPause();
+    }
+
+    private void putDB(String url,String photoUrl) {
+        Media media = new Media();
+        media.setFilePath(url);
+        media.setVisiable(1);
+        media.setDate(Gettime.getthistime());
+        media.setPhotoPath(photoUrl);
+        media.save();
     }
 }

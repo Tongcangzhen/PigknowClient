@@ -28,6 +28,8 @@ import com.example.ldjg.pigknowclient.DB.Record;
 import com.example.ldjg.pigknowclient.DB.User;
 import com.example.ldjg.pigknowclient.Util.ShowDialog;
 
+import org.litepal.LitePal;
+
 import java.util.List;
 
 import butterknife.BindView;
@@ -54,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragment.OnLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        LitePal.getDatabase();
         ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -119,12 +122,18 @@ public class MainActivity extends AppCompatActivity implements ItemFragment.OnLi
             return true;
         } else {
             if (id == R.id.action_add) {
-                Intent intent=new Intent(MainActivity.this, SelectFarmsActivity.class);
+                Intent intent=new Intent(MainActivity.this, AddRecordActivity.class);
+                intent.putExtra("haveVideo",false);
                 startActivity(intent);
                 return true;
             }
             if (id == R.id.action_assment) {
                 Intent intent = new Intent(MainActivity.this, AssmentActivity.class);
+                startActivity(intent);
+                return true;
+            }
+            if (id == R.id.action_other) {
+                Intent intent = new Intent(MainActivity.this, OtherFarmActivity.class);
                 startActivity(intent);
                 return true;
             }

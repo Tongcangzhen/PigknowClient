@@ -1,5 +1,6 @@
 package com.example.ldjg.pigknowclient.Util;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -21,6 +22,11 @@ import com.example.ldjg.pigknowclient.R;
 public class UIHelper {
     public static void returnHome(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        context.startActivity(intent);
+    }
+    public static void returnback(Context context, Class context1) {
+        Intent intent = new Intent(context, context1);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         context.startActivity(intent);
     }
